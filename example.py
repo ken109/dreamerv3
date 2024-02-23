@@ -3,6 +3,7 @@ def main():
   import warnings
   import dreamerv3
   from dreamerv3 import embodied
+  from dreamerv3.embodied.envs import from_gym
   warnings.filterwarnings('ignore', '.*truncated to dtype int32.*')
 
   # See configs.yaml for all options.
@@ -18,7 +19,7 @@ def main():
       'decoder.mlp_keys': '$^',
       'encoder.cnn_keys': 'image',
       'decoder.cnn_keys': 'image',
-      # 'jax.platform': 'cpu',
+      'jax.platform': 'cpu',
   })
   config = embodied.Flags(config).parse()
 
@@ -33,7 +34,6 @@ def main():
   ])
 
   import crafter
-  from embodied.envs import from_gym
   env = crafter.Env()  # Replace this with your Gym env.
   env = from_gym.FromGym(env, obs_key='image')  # Or obs_key='vector'.
   env = dreamerv3.wrap_env(env, config)
